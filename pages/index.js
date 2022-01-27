@@ -83,7 +83,7 @@ function Title(props) {
                 textFieldColors={{
                   neutral: {
                     textColor: appConfig.theme.colors.neutrals[200],
-                    mainColor: appConfig.theme.colors.neutrals[900],
+                    mainColor: "rgba(255, 255, 255, 0.3)",
                     mainColorHighlight: appConfig.theme.colors.primary[500],
                     //backgroundColor: appConfig.theme.colors.neutrals[800],
                     backgroundColor: "rgba(18, 18, 18, 0.3)",
