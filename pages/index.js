@@ -24,6 +24,7 @@ function Title(props) {
   export default function PaginaInicial() {
     const [username, setUsername] = React.useState('guilhermednz');
     const roteamento = useRouter();
+    const serverResponse = fetch(`https://api.github.com/users/${username}`).then(function(res){(res.status)});
   
     console.log(roteamento);
 
@@ -47,7 +48,7 @@ function Title(props) {
                 sm: 'row',
               },
               width: '100%', maxWidth: '700px',
-              borderRadius: '20px', padding: '32px', margin: '16px',
+              borderRadius: '20px', padding: '40px', margin: '16px',
               boxShadow: '0 2px 10px 0 argb(0 0 0 / 30%)',  
               //backgroundColor: appConfig.theme.colors.neutrals[700],
               backgroundColor: "rgba(0, 0, 0, 0.65)",
@@ -127,7 +128,7 @@ function Title(props) {
                   borderRadius: '50%',
                   marginBottom: '16px',
                 }}
-                src={`https://github.com/${username}.png`}
+                src={serverResponse != 404 ? `https://github.com/${username}.png`: `https://github.com/dasdasdasda.png`}
               />
               <Text
                 variant="body4"
