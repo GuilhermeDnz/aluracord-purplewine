@@ -1,35 +1,7 @@
 import { Box, Button, Text, TextField, Image } from '@skynexui/components';
-import appConfig from '../config.json';
-
-function GlobalStyle() {
-return (
-    <style global jsx>{`
-        *{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Open Sans', sans-serif;
-        }
-        /* App fit Height */ 
-        html, body, #__next {
-          min-height: 100vh;
-          display: flex;
-          flex: 1;
-        }
-        #__next {
-          flex: 1;
-        }
-        #__next > * {
-          flex: 1;
-        }
-        /* ./App fit Height */ 
-    `} </style>
-)
-
-}
+import { useRouter } from 'next/router';
+import appConfig from '../config.json'
+import React from 'react';
 
 
 function Title(props) {
@@ -48,26 +20,15 @@ function Title(props) {
         </div>
     );
 }
-/*
-function HomePage() {
-    return (
-        <div>
-            <GlobalStyle />
-            <Title tag="h2">Bem vinhos e vinhas</Title>
-            <h2>Discord - Alura Vinho</h2>
-
-    </div>
-    )
-  }
-  
-  export default HomePage */
   
   export default function PaginaInicial() {
-    const username = 'guilhermednz';
+    const [username, setUsername] = React.useState('guilhermednz');
+    const roteamento = useRouter();
   
+    console.log(roteamento);
+
     return (
       <>
-        <GlobalStyle />
         <Box
           styleSheet={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -87,13 +48,20 @@ function HomePage() {
               },
               width: '100%', maxWidth: '700px',
               borderRadius: '20px', padding: '32px', margin: '16px',
-              boxShadow: '0 2px 10px 0 rgb(0 0 0 / 20%)',
-              backgroundColor: appConfig.theme.colors.neutrals[700],
+              boxShadow: '0 2px 10px 0 argb(0 0 0 / 30%)',  
+              //backgroundColor: appConfig.theme.colors.neutrals[700],
+              backgroundColor: "rgba(0, 0, 0, 0.65)",
+
             }}
           >
             {/* Formulário */}
             <Box
               as="form"
+              onSubmit={function (infosDoEvento){
+                infosDoEvento.preventDefault();
+                console.log('Alguém submeteu o form');
+                window.location.href = '/chat';
+              }}
               styleSheet={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                 width: { xs: '100%', sm: '50%' }, textAlign: 'center', marginBottom: '32px',
@@ -103,15 +71,22 @@ function HomePage() {
               <Text variant="body3" styleSheet={{ marginBottom: '32px', color: appConfig.theme.colors.neutrals[300] }}>
                 {appConfig.name}
               </Text>
-  
+
               <TextField
+                value={username}
+                onChange={function (event){
+                    console.log('usuario digitou', event.target.value);
+                    const valor = event.target.value;
+                    setUsername(valor);
+                }}
                 fullWidth
                 textFieldColors={{
                   neutral: {
                     textColor: appConfig.theme.colors.neutrals[200],
                     mainColor: appConfig.theme.colors.neutrals[900],
                     mainColorHighlight: appConfig.theme.colors.primary[500],
-                    backgroundColor: appConfig.theme.colors.neutrals[800],
+                    //backgroundColor: appConfig.theme.colors.neutrals[800],
+                    backgroundColor: "rgba(18, 18, 18, 0.3)",
                   },
                 }}
               />
@@ -138,10 +113,11 @@ function HomePage() {
                 alignItems: 'center',
                 maxWidth: '200px',
                 padding: '16px',
-                backgroundColor: appConfig.theme.colors.neutrals[800],
+                // backgroundColor: appConfig.theme.colors.neutrals[800],
+                backgroundColor: "rgba(0, 0, 0, 0.8)",
                 border: '1px solid',
                 borderColor: appConfig.theme.colors.neutrals[999],
-                borderRadius: '10px',
+                borderRadius: '20px',
                 flex: 1,
                 minHeight: '240px',
               }}
