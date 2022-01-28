@@ -163,7 +163,7 @@ function MessageList(props) {
                                     display: 'inline-block',
                                     marginRight: '8px',
                                 }}
-                                src={`https://github.com/guilhermednz.png`}
+                                src={`https://github.com/$username.png`}
                             />
                             <Text tag="strong">
                                 {message.de}

@@ -80,6 +80,7 @@ function Title(props) {
                     const valor = event.target.value;
                     setUsername(valor);
                 }}
+                placeholder="Digite o usuário do GitHub"
                 fullWidth
                 textFieldColors={{
                   neutral: {
@@ -90,6 +91,7 @@ function Title(props) {
                     backgroundColor: "rgba(18, 18, 18, 0.3)",
                   },
                 }}
+           
               />
               <Button
                 type='submit'
@@ -129,7 +131,12 @@ function Title(props) {
                   marginBottom: '16px',
                 }}
                 //src={username > 2 ? `https://github.com/${username}.png`: ""}
-                src={`https://github.com/${username}.png`}
+                //src={`https://github.com/${username}.png`}
+                src={
+                  username.length > 2
+                  ? `https://github.com/${username}.png`
+                  : `/images/imgerror.png`
+                }
               />
               <Text
                 variant="body4"
