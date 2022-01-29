@@ -1,23 +1,51 @@
 import { Box, Text, TextField, Image, Button } from '@skynexui/components';
 import React from 'react';
 import appConfig from '../config.json';
+import { createClient } from '@supabase/supabase-js'
+
+
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzQxMTIyNywiZXhwIjoxOTU4OTg3MjI3fQ.QJxSoLuIrUA5QMH0FtRzU9rOD5aG1T_hc2GfvpKG3dk';
+const SUPABASE_URL = 'https://wynuilpdhxtitefenrey.supabase.co';
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 export default function ChatPage() {
-    const [message, setMessage] = React.useState('');
+    const [mensagem, setMensagem] = React.useState('');
     const [listaDeMensagens, setListaDeMensagens] = React.useState([]);
 
+    React.useEffect(() => {
+        supabaseClient
+            .from('mensagens')
+            .select('*')
+            .order('id', { ascending: false })
+            .then(({ data }) => {
+                console.log('Dados da consulta:', data);
+                setListaDeMensagens(data);
+            });
+    }, []);
+
     function handleNovaMensagem(novaMensagem) {
-        const message = {
-            id: listaDeMensagens.length + 1,
+        const mensagem = {
+            //id: listaDeMensagens.length + 1,
             de: 'guilhermednz',
             texto: novaMensagem,
         };
 
-        setListaDeMensagens([
-            message,
-            ...listaDeMensagens,
-        ]);
-        setMessage('');
+        supabaseClient
+            .from('mensagens')
+            .insert([
+                // Tem que ser um objeto com os MESMOS CAMPOS que você escreveu no supabase
+                mensagem
+            ])
+            .then(({ data }) => {
+                console.log('Criando mensagem: ', data);
+                setListaDeMensagens([
+                    data[0],
+                    ...listaDeMensagens,
+                ]);
+            });
+            
+        setMensagem('');
+
     }
 
     return (
@@ -73,15 +101,15 @@ export default function ChatPage() {
                         }}
                     >
                         <TextField
-                            value={message}
+                            value={mensagem}
                             onChange={(event) => {
                                 const valor = event.target.value;
-                                setMessage(valor);
+                                setMensagem(valor);
                             }}
                             onKeyPress={(event) => {
                                 if (event.key === 'Enter') {
                                     event.preventDefault();
-                                    handleNovaMensagem(message);
+                                    handleNovaMensagem(mensagem);
                                 }
                             }}
                             placeholder="Insira sua mensagem aqui..."
@@ -136,10 +164,10 @@ function MessageList(props) {
                 marginBottom: '16px',
             }}
         >
-            {props.mensagens.map((message) => {
+            {props.mensagens.map((mensagem) => {
                 return (
                     <Text
-                        key={message.id}
+                        key={mensagem.id}
                         tag="li"
                         styleSheet={{
                             borderRadius: '5px',
@@ -163,10 +191,10 @@ function MessageList(props) {
                                     display: 'inline-block',
                                     marginRight: '8px',
                                 }}
-                                src={`https://github.com/$username.png`}
+                                src={`https://github.com/${mensagem.de}.png`}
                             />
                             <Text tag="strong">
-                                {message.de}
+                                {mensagem.de}
                             </Text>
                             <Text
                                 styleSheet={{
@@ -179,10 +207,10 @@ function MessageList(props) {
                                 {(new Date().toLocaleDateString())}
                             </Text>
                         </Box>
-                        {message.texto}
+                        {mensagem.texto}
                     </Text>
                 );
             })}
         </Box>
     )
- }
+}
