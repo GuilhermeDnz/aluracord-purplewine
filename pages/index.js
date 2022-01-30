@@ -22,7 +22,7 @@ function Title(props) {
 }
   
   export default function PaginaInicial() {
-    const [username, setUsername] = React.useState('guilhermednz');
+    const [username, setUsername] = React.useState('');
     const roteamento = useRouter();
     //const serverResponse = fetch(`https://api.github.com/users/${username}`).then(function(res){(res.status)});
   
@@ -61,7 +61,8 @@ function Title(props) {
               onSubmit={function (infosDoEvento){
                 infosDoEvento.preventDefault();
                 console.log('Alguém submeteu o form');
-                window.location.href = '/chat';
+                roteamento.push(`/chat?username=${username}`);
+                //window.location.href = '/chat';
               }}
               styleSheet={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
